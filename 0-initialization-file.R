@@ -39,7 +39,7 @@ library(tidyr)
 
 # Set directory
 
-#setwd(paste0('C:/Users/', 'aboslett', '/Box'))
+##setwd(paste0('C:/Users/', 'aboslett', '/Box'))
 setwd('/Users/Jordan/Box/')
 
 
