@@ -3,7 +3,6 @@
 # andrew_boslett@urmc.rochester.edu
 
 
-
 # Set options ---------------------
 
 rm(list = ls())
@@ -32,19 +31,14 @@ for(fff in 1999:2019) {
   
 }
 
+# Save as RDS file --------------------------------
+
 all_overdoses %>% saveRDS("Opioids_CCs/Scratch/Overdoses.rds")
 
+# Estimate summaries of deaths by year by specific F code --------------------
+# Notes: Not used elsewhere in code. Can be safely dropped, I believe.
 
-
-
-temp <- all_overdoses
-
-
-
-
-
-
-temp_summary <- temp %>%
+temp_summary <- all_overdoses %>%
   select(id_overdose, year,
          contains('record')) %>%
   gather(variable, value, -id_overdose, -year) %>%
@@ -52,7 +46,7 @@ temp_summary <- temp %>%
   filter(!is.na(variable) & variable != '') %>%
   filter(str_detect(string = value, pattern = '^F1'))
 
-# Total drug overdoses for year: F1*
+# Extract Total drug overdoses for year: F1*
   # Note to Jordan/Andy: Need to drop Alcohol and Tobacco-related F1*
 
 temp_summary %>% 
@@ -61,15 +55,13 @@ temp_summary %>%
   select(id_overdose, year) %>% 
   unique() %>% nrow()/nrow(temp)
 
-# Total drug overdoses for year: F11*
+# Extract Total drug overdoses for year: F11*
 
 temp_summary %>% 
   filter(str_detect(string = value, pattern = '^F11') == TRUE) %>%
   select(id_overdose, year) %>% 
   unique() %>% nrow()/nrow(temp)
   
-
-
-
+# Save as a CSV to hard-drive
 
 write.csv(all_overdoses,'/Users/Jordan/Documents/Work/Hill Lab/Opioids ML/opioids.csv')

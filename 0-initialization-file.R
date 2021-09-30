@@ -3,8 +3,8 @@
 # jordan.pappas@rochester.edu
 
 
-# Load packages
-# Note: Not all of these packages are used in the following code for our Addiction paper.
+# Load packages --------------------------------------
+# Note: Not all of these packages are used in the following code for our paper.
 # These are a sample of the packages I use in all of my projects, and I included them here to be
 # comprehensive in my own work. I've dropped those that I know I don't know use in this project; all others
 # may, or may not, be used in the following code.
@@ -14,7 +14,6 @@ library(foreign)
 library(readr)
 library(readxl)
 library(data.table)
-#library(statar)
 library(sp)
 library(rgdal)
 library(stringr)
@@ -29,17 +28,16 @@ library(caret)
 library(xgboost)
 library(broom)
 library(ggrepel)
-#library(glmnet)
 library(zoo)
 library(maps)
 library(tidycensus)
 library(vcd)
 library(tidyr)
 
+# Set directory -------------------------
+# Notes: Manually switch between two main script writers. 
 
-# Set directory
-
-setwd(paste0('C:/Users/', 'aboslett', '/Box'))
+##setwd(paste0('C:/Users/', 'aboslett', '/Box'))
 setwd('/Users/Jordan/Box/')
 
 
