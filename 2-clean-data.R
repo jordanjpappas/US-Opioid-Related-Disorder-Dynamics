@@ -94,5 +94,5 @@ for(zzz in 1999:2019) {
 # Note: I moved this outside of the loop because I think it was slowing it down. To save over the same file, over and over again,
 # is probably not the best look here. So it is what it is.
 
-#all_deaths %>% saveRDS("Opioids_CCs/Scratch/Deaths_with_F1_code.rds")
+all_deaths %>% saveRDS("Opioids_CCs/Scratch/Deaths_with_F1_code.rds")
 all_deaths %>% saveRDS("Opioids_CCs/Scratch/Drug_related_Deaths.rds")

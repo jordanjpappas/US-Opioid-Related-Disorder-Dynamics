@@ -1,25 +1,28 @@
 # Elaine Hill, Andrew Boslett, Alina Denham, Meredith Adams, Jordan Pappas
 # University of Rochester Medical Center, Health and Environmental Economics Lab (HEEL)
 
-
+################################################################
 ########################### Preamble ###########################
+################################################################
 
 rm(list = ls())
 options(scipen = 999)
 
-########################### Figure: create-figure-on-disorders-and-overdose-trends ###########################
+##############################################################################################################
+########################### Figure: create-figures-on-disorders-and-overdose-trends ##########################
+##############################################################################################################
 
 # Goal: A figure of trends from 1999-2019 in
 # (a) # of drug overdoses, total;
 # (b) # of drug overdoses, with filters on F1* contributing causes of death (SKIP FOR NOW - AJB); and
 # (c) # of total non-drug overdose deaths with either CC/underlying cause of death with a F1* cause.
 
-# Import data ------------------------------------
+# Import data
 
 all_deaths <- readRDS("Opioids_CCs/Scratch/Deaths_with_F1_code.rds")
 overdose_deaths <- readRDS("Opioids_CCs/Scratch/Overdoses.rds")
 
-# Summarise data by year ----------------------------
+# Summarise data by year
 
 # Drug overdoses
 
@@ -73,7 +76,6 @@ all_deaths_all <- all_deaths %>%
   summarise(n_n = n()) %>%
   ungroup()
 all_deaths_all$ICD_code <- 'all deaths'
-
 
 # Clean data
 
@@ -151,13 +153,9 @@ overdose_opioid_F1_CC <- overdose_deaths %>%
   ungroup()
 overdose_opioid_F1_CC$ICD_code <- 'overdoses opioid with F1* CC'
 
-
-
 # Bind data
 
 bind <- bind_rows(overdose_all,overdose_F1_CC,all_deaths_all,overdose_opioid_all,overdose_opioid_F1_CC)
-
-
 
 # Plot data
 
@@ -181,8 +179,6 @@ dev.off()
 
 bind <- subset(bind, ICD_code=="overdoses all" | ICD_code=="overdoses with F1* CC" | ICD_code=="all deaths")
 
-
-
 # Plot data
 
 png('Opioids_CCs/Figures/Figure_(1).png',width=600,height=600)
@@ -201,8 +197,9 @@ yearly_plot
 
 dev.off()
 
-
-########################### Figure: create-figure-on-disorders-and-overdose-trends ###########################
+##############################################################################################################
+########################### Figure: create-figures-on-disorders-and-overdose-trends ##########################
+##############################################################################################################
 
 # Goal: A figure of trends from 1999-2019 in
 # (a) # of drug overdoses, total;
@@ -214,8 +211,6 @@ dev.off()
 # Import data
 
 all_deaths <- readRDS("Opioids_CCs/Scratch/Deaths_with_F1_code.rds")
-
-
 
 # Clean data
 
@@ -248,13 +243,9 @@ all_deaths_CC <- all_deaths %>%
   ungroup()
 all_deaths_CC$ICD_code <- 'all deaths CC'
 
-
-
 # Bind data
 
 bind <- bind_rows(all_deaths_UCOD,all_deaths_CC)
-
-
 
 # Plot data
 
@@ -274,7 +265,9 @@ yearly_plot
 
 dev.off()
 
-########################### Figure: create-figure-on-disorders-and-overdose-trends ###########################
+##############################################################################################################
+########################### Figure: create-figures-on-disorders-and-overdose-trends ##########################
+##############################################################################################################
 
 # Goal: A figure of trends from 1999-2019 with 
 # (a) # of total non-drug overdose deaths with an underlying cause of death (UCOD) with a F1* cause; and 
@@ -284,8 +277,6 @@ dev.off()
 
 all_deaths <- readRDS("Opioids_CCs/Scratch/Deaths_with_F1_code.rds")
 overdose_deaths <- readRDS("Opioids_CCs/Scratch/Overdoses.rds")
-
-
 
 # Clean data
 
@@ -298,8 +289,6 @@ overdose_deaths %<>% mutate_at(vars(F101:O961),
 # NA to 0 for all record causes
 all_deaths %<>% mutate_at(vars(F110:F154, F135:F116),
                           funs(ifelse(is.na(.) == TRUE, 0, .)))
-
-
 
 # (a) # of drug-related disorders, with filters on F1* contributing causes of death
 
@@ -316,8 +305,6 @@ all_F1_CC <- all_deaths %>%
   ungroup()
 all_F1_CC$ICD_code <- 'disorders with F1* CC'
 
-
-
 # (b) # of drug-related disorders, with filters on F11* contributing causes of death
 
 # Create variables indicating incidence of any related drug codes
@@ -332,8 +319,6 @@ all_F11_CC <- all_deaths %>%
   summarise(n_n = n()) %>%
   ungroup()
 all_F11_CC$ICD_code <- 'disorders with F11 CC'
-
-
 
 # (c) # of drug overdoses, with filters on F1* contributing causes of death
 
@@ -350,8 +335,6 @@ overdose_F1_CC <- overdose_deaths %>%
   ungroup()
 overdose_F1_CC$ICD_code <- 'overdoses with F1* CC'
 
-
-
 # (d) # of drug overdoses, with filters on F11* contributing causes of death
 
 # Create variables indicating incidence of any related drug codes
@@ -367,13 +350,9 @@ overdose_F11_CC <- overdose_deaths %>%
   ungroup()
 overdose_F11_CC$ICD_code <- 'overdoses with F11 CC'
 
-
-
 # Bind data
 
 bind <- bind_rows(all_F1_CC,all_F11_CC,overdose_F1_CC,overdose_F11_CC)
-
-
 
 # Plot data
 
@@ -393,15 +372,17 @@ yearly_plot
 
 dev.off()
 
+####################################################################################################
 ########################### Figure: create-figure-on-#-of-deaths-by-year ###########################
+####################################################################################################
 
-# Goal: # of deaths by year ----------------------
+# Goal: # of deaths by year
 
-# Import data ----------------------
+# Import data
 
 all_deaths <- readRDS("Opioids_CCs/Scratch/Deaths_with_F1_code.rds")
 
-# Clean data -----------------------
+# Clean data
 
 names(all_deaths)
 
@@ -435,9 +416,11 @@ yearly_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Annual_Deaths_Non_Drug_Overdoses_F1.jpg')
 
+#################################################################################################################
 ########################### Figure: create-figure-on-#-of-deaths-by-year-F11-category ###########################
+#################################################################################################################
 
-# Goal: # of deaths by year, by F11 category -------------------------
+# Goal: # of deaths by year, by F11 category
 
 temp <- all_deaths %>%
   filter(F11_all == 1) %>%
@@ -455,9 +438,11 @@ yearly_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Annual_Deaths_Non_Drug_Overdoses_F11.jpg')
 
+################################################################################################################
 ########################### Figure: create-figure-on-#-of-deaths-by-year-F1*-as-UCOD ###########################
+################################################################################################################
 
-# Goal: # of deaths by year, F1* as UCOD -----------------------
+# Goal: # of deaths by year, F1* as UCOD
 
 temp <- all_deaths %>%
   filter(str_detect(string = ucod, pattern = '^F1') == TRUE) %>%
@@ -475,9 +460,11 @@ yearly_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Annual_Deaths_Non_Drug_Overdoses_F1_UCOD.jpg')
 
+################################################################################################################
 ########################### Figure: create-figure-on-#-of-deaths-by-year-F11-as-UCOD ###########################
+################################################################################################################
 
-# Goal: # of deaths by year, F11 as UCOD -----------------------
+# Goal: # of deaths by year, F11 as UCOD
 
 temp <- all_deaths %>%
   filter(str_detect(string = ucod, pattern = '^F11') == TRUE) %>%
@@ -495,9 +482,11 @@ yearly_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Annual_Deaths_Non_Drug_Overdoses_F11_UCOD.jpg')
 
+##############################################################################################################
 ########################### Figure: create-figure-on-#-of-deaths-by-year-F11-as-CC ###########################
+##############################################################################################################
 
-# Goal: # of deaths by year, F11 as CC -----------------------
+# Goal: # of deaths by year, F11 as CC
 
 temp <- all_deaths %>%
   filter(str_detect(string = ucod, pattern = '^F11') == FALSE &
@@ -516,9 +505,11 @@ yearly_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Annual_Deaths_Non_Drug_Overdoses_F11_CC.jpg')
 
+###########################################################################################################################################
 ########################### Figure: create-figure-on-most-common-UCODs-with-opioid-related-disorders-F11*-as-CC ###########################
+###########################################################################################################################################
 
-# Goal: Most common UCODs with opioid-related disorders F11* as CC -------------------
+# Goal: Most common UCODs with opioid-related disorders F11* as CC
 
 temp <- all_deaths %>%
   filter(F11_all == 1 & str_detect(string = ucod, pattern = '^F1') == FALSE) %>%
@@ -554,9 +545,11 @@ dot_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Top_25_UCOD_F11.jpg')
 
+##########################################################################################################################################
 ########################### Figure: create-figure-on-most-common-UCODs-with-opioid-related-disorders-F1*-as-CC ###########################
+##########################################################################################################################################
 
-# Goal: Most common UCODs with opioid-related disorders F1* as CC -------------------
+# Goal: Most common UCODs with opioid-related disorders F1* as CC
 
 temp <- all_deaths %>%
   filter(F1_all == 1 & str_detect(string = ucod, pattern = '^F1') == FALSE) %>%
@@ -592,16 +585,18 @@ dot_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Top_25_UCOD_F1.jpg')
 
+#############################################################################################
 ########################### Figure: create-figure-on-age-by-group ###########################
+#############################################################################################
 
 # Goal: Examine distribution of ages for drug overdoses and drug-related deaths
 
-# Import data --------------------------
+# Import data 
 
 overdose_deaths <- readRDS("Opioids_CCs/Scratch/Overdoses.rds") # overdose
 drug_deaths <- readRDS("Opioids_CCs/Scratch/Drug_related_Deaths.rds") # drug-related
 
-# Clean data ------------------------
+# Clean data
 
 # Tabulate age for < 2003
 
@@ -672,14 +667,16 @@ temp_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Age_IQR.jpg')
 
+###################################################################################################
 ########################### Figure: create-figure-on-education-by-group ###########################
+###################################################################################################
 
-# Import data ----------------------------
+# Import data
 
 overdose_deaths <- readRDS("Opioids_CCs/Scratch/Overdoses.rds") # overdose
 drug_deaths <- readRDS("Opioids_CCs/Scratch/Drug_related_Deaths.rds") # drug-related
 
-# Clean data -----------------------
+# Clean data
 # Notes: In this part of the script, we loop a couple functions that summarize the drug overdose and drug-related disorder
 # data by race groups.
 
@@ -744,16 +741,18 @@ education_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Education.jpg')
 
+###################################################################################################
 ########################### Figure: create-figure-on-ethnicity-by-group ###########################
+###################################################################################################
 
 # Goal: Examine distribution of ages for drug overdoses and drug-related deaths
 
-# Import data --------------------------
+# Import data
 
 overdose_deaths <- readRDS("Opioids_CCs/Scratch/Overdoses.rds") # overdose
 drug_deaths <- readRDS("Opioids_CCs/Scratch/Drug_related_Deaths.rds") # drug-related
 
-# Calculate quantiles of age by year --------------------------------
+# Calculate quantiles of age by year
 
 ethnicity_data <- data.frame()
 
@@ -800,14 +799,16 @@ ethnicity_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Ethnicity.jpg')
 
+################################################################################################
 ########################### Figure: create-figure-on-gender-by-group ###########################
+################################################################################################
 
-# Import data ----------------------------
+# Import data
 
 overdose_deaths <- readRDS("Opioids_CCs/Scratch/Overdoses.rds") # overdose
 drug_deaths <- readRDS("Opioids_CCs/Scratch/Drug_related_Deaths.rds") # drug-related
 
-# Clean data -----------------------
+# Clean data
 # Notes: In this part of the script, we loop a couple functions that summarize the drug overdose and drug-related disorder
 # data by race groups.
 
@@ -857,14 +858,16 @@ gender_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Gender.jpg')
 
+##################################################################################################
 ########################### Figure: create-figure-on-hospital-by-group ###########################
+##################################################################################################
 
-# Import data ----------------------------
+# Import data
 
 overdose_deaths <- readRDS("Opioids_CCs/Scratch/Overdoses.rds") # overdose
 drug_deaths <- readRDS("Opioids_CCs/Scratch/Drug_related_Deaths.rds") # drug-related
 
-# Clean data -----------------------
+# Clean data
 # Notes: In this part of the script, we loop a couple functions that summarize the drug overdose and drug-related disorder
 # data by race groups.
 
@@ -919,9 +922,11 @@ hospital_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Hospital.jpg')
 
+##############################################################################################################################
 ########################### Figure: create-figure-on-number-of-contributing-causes-by-state-policy ###########################
+##############################################################################################################################
 
-# Import data ----------------------------
+# Import data
 
 death_data <- data.frame()
 
@@ -946,7 +951,7 @@ for(fff in 2015:2019) {
   
 }
 
-# Clean data -----------------------
+# Clean data
 # Notes: In this part of the script, we loop a couple functions that summarize the drug overdose and drug-related disorder
 # data by race groups.
 
@@ -1018,7 +1023,7 @@ death_data %>% dplyr::select(contains('record')) %>%
   dplyr::select(-record_1) %>%
   rowSums() -> death_data$number_of_record_causes
 
-# Plot number of contributing causes --------------------------
+# Plot number of contributing causes
 
 violin_plot <- ggplot(data = death_data,
                       aes(policy, number_of_record_causes)) + 
@@ -1026,7 +1031,7 @@ violin_plot <- ggplot(data = death_data,
 
 violin_plot
 
-# Line graph over time ----------------------------
+# Line graph over time
 
 temp <- death_data %>% group_by(year, policy) %>%
   summarise(mean_number = mean(number_of_record_causes, na.rm = TRUE),
@@ -1046,7 +1051,7 @@ line_plot
 ggsave('Opioids_CCs/Figures/Figure_X_Number_of_Contributing_Causes.jpg')
 
 
-# Line graph over time ----------------------------
+# Line graph over time
 
 temp <- death_data %>% filter(drug_poisoning_death == 1) %>%
   group_by(year, policy) %>%
@@ -1066,25 +1071,16 @@ line_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Number_of_Contributing_Causes_Drugs.jpg')
 
-
-
-
-g <- ggplot(mpg, aes(class, cty))
-g + geom_violin() + 
-  labs(title="Violin plot", 
-       subtitle="City Mileage vs Class of vehicle",
-       caption="Source: mpg",
-       x="Class of Vehicle",
-       y="City Mileage")
-
+##############################################################################################
 ########################### Figure: create-figure-on-race-by-group ###########################
+##############################################################################################
 
-# Import data ----------------------------
+# Import data
 
 overdose_deaths <- readRDS("Opioids_CCs/Scratch/Overdoses.rds") # overdose
 drug_deaths <- readRDS("Opioids_CCs/Scratch/Drug_related_Deaths.rds") # drug-related
 
-# Clean data -----------------------
+# Clean data
 # Notes: In this part of the script, we loop a couple functions that summarize the drug overdose and drug-related disorder
 # data by race groups.
 
@@ -1135,14 +1131,16 @@ race_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Race.jpg')
 
+######################################################################################################
 ########################### Figure: create-figure-on-state-policy-by-group ###########################
+######################################################################################################
 
-# Import data ----------------------------
+# Import data
 
 overdose_deaths <- readRDS("Opioids_CCs/Scratch/Overdoses.rds") # overdose
 drug_deaths <- readRDS("Opioids_CCs/Scratch/Drug_related_Deaths.rds") # drug-related
 
-# Clean data -----------------------
+# Clean data
 # Notes: In this part of the script, we loop a couple functions that summarize the drug overdose and drug-related disorder
 # data by race groups.
 
@@ -1261,14 +1259,15 @@ policy_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Policy.jpg')
 
+##########################################################################################################
 ########################### Figure: plot_frequency_of_common_UCODs_where_CC_F1 ###########################
+##########################################################################################################
 
 # Goal: What are the top-15 most common underlying causes of death with non-drug overdose deaths with a F1* contributing, but not underlying, cause of death? 2015-2019 for this one + one for the entire time period
 
 # Load data
 
 all_deaths <- readRDS("Opioids_CCs/Scratch/Deaths_with_F1_code.rds")
-
 
 # Clean data
 
@@ -1293,8 +1292,6 @@ temp %<>% arrange(-n_n) %>%
   filter(row_number() <= 15)
 
 temp %<>% arrange(n_n) %>% mutate(ucod = factor(ucod, unique(ucod)))
-
-
 
 # Plot data
 
@@ -1326,15 +1323,9 @@ dot_plot
 
 dev.off()
 
-
-
-
-
-
 # Load data
 
 all_deaths <- readRDS("Opioids_CCs/Scratch/Deaths_with_F1_code.rds")
-
 
 # Clean data
 
@@ -1362,7 +1353,6 @@ temp %<>% arrange(-n_n) %>%
   filter(row_number() <= 15)
 
 temp %<>% arrange(n_n) %>% mutate(ucod = factor(ucod, unique(ucod)))
-
 
 # Plot data
 
@@ -1394,15 +1384,15 @@ dot_plot
 
 dev.off()
 
+##########################################################################################################
 ########################### Figure: plot_frequency_of_common_CCs_where_UCOD_F1 ###########################
-
+##########################################################################################################
 
 # Goal: What are the top-15 most common contributing causes of death with non-drug overdose deaths with a F1* underlying cause of death? Same as above for timelines.
 
 # Load data
 
 all_deaths <- readRDS("Opioids_CCs/Scratch/Deaths_with_F1_code.rds")
-
 
 # Clean data
 
@@ -1423,16 +1413,10 @@ all_deaths %>% select(starts_with('F1')) %>%
 
 all_deaths %<>% mutate(F1_all = ifelse(F1_all > 0, 1, 0))
 
-
-
 all_deaths %>% select(record_2:record_20) %>% t %>% c %>% unique 
-
 
 # record_2:record_20 unique values -> dummy variables
 # sum dummy variable columns and arrange by size
-
-
-
 
 temp <- all_deaths %>%
   filter(F1_all == 1 & str_detect(string = ucod, pattern = '^F1') == TRUE) %>%
@@ -1444,7 +1428,6 @@ temp %<>% arrange(-n_n) %>%
   filter(row_number() <= 25)
 
 temp %<>% arrange(n_n) %>% mutate(ucod = factor(ucod, unique(ucod)))
-
 
 # Plot data
 
@@ -1476,7 +1459,9 @@ dot_plot
 
 dev.off()
 
+#####################################################################################################################
 ########################### Figure: plot_age_unadjusted_mortality_rates_two_dots_by_state ###########################
+#####################################################################################################################
 
 # Goal: State-by-state dot-plots for 2019 with mortality rates (unadjusted, for now) per 100,000 people for 
 # (a) drug overdoses; and 
@@ -1544,7 +1529,6 @@ for (dataset in c('Drug-Related Disorders','Drug Overdoses','Drug-Related Disord
     print("pass")
   } 
   
-  
   # Create state column
   deaths$state <- NA
   deaths$state <- substr(deaths$county_fips_occ, 0, 2)
@@ -1562,7 +1546,6 @@ for (dataset in c('Drug-Related Disorders','Drug Overdoses','Drug-Related Disord
                  funs(sum(., na.rm = TRUE))) %>%
     ungroup()
   
-  
   # Clean state_to_fips
   # Pad 0s on FIPS column
   state_to_fips$`FIPS State Numeric Code` <- str_pad(state_to_fips$`FIPS State Numeric Code`, 2, side="left",0)
@@ -1578,13 +1561,11 @@ for (dataset in c('Drug-Related Disorders','Drug Overdoses','Drug-Related Disord
                  funs(sum(., na.rm = TRUE))) %>%
     ungroup()
   
-  
   # Merge data
   # Merge population data to drug overdoses data
   temp_summary <- 
     pop_summary %<>% left_join(temp_summary, by = c('year', 
                                                     'state_fips' = 'state'))
-  
   # Clean data
   # Clean merged
   # Rearrange data
@@ -1618,8 +1599,6 @@ for (dataset in c('Drug-Related Disorders','Drug Overdoses','Drug-Related Disord
   print("test")
   state_rates$type <- dataset
   
-  
-  
   # Bind data
   
   all_deaths %<>% bind_rows(state_rates)
@@ -1627,8 +1606,6 @@ for (dataset in c('Drug-Related Disorders','Drug Overdoses','Drug-Related Disord
   print(dataset)
   
 }
-
-
 
 # Clean data
 
@@ -1666,7 +1643,6 @@ dot_plot
 
 dev.off()
 
-
 # Save data
 
 # all_deaths
@@ -1690,7 +1666,9 @@ overdose_deaths <- overdose_deaths[order(overdose_deaths$rate),]
 #overdose_deaths$state_county_name = factor(overdose_deaths$state_county_name,levels=overdose_deaths$state_county_name)
 write.csv(overdose_deaths,'/Users/Jordan/Box/Opioids_CCs/Scratch/all_deaths_overdose_state.csv')
 
+######################################################################################################################
 ########################### Figure: plot_age_unadjusted_mortality_rates_two_dots_by_county ###########################
+######################################################################################################################
 
 # Goal: What are the top-15 or 20 counties in the U.S. in terms of drug-related disorder deaths for 2019. Two versions of this figure would suffice, for review: 
 # (a) one where drug-related disorders are only based on those with underlying causes of death with an F1*; and 
@@ -1772,7 +1750,6 @@ for (dataset in c('Drug-Related Disorders UCOD','Drug-Related Disorders UCOD and
                  funs(sum(., na.rm = TRUE))) %>%
     ungroup()
   
-  
   # Merge data
   # Merge population data to drug overdoses data
   temp_summary <- 
@@ -1815,8 +1792,6 @@ for (dataset in c('Drug-Related Disorders UCOD','Drug-Related Disorders UCOD and
   merged_county_rates$state_county_name = factor(merged_county_rates$state_county_name,levels=merged_county_rates$state_county_name)
   merged_county_rates$type <- dataset
   
-  
-  
   # Bind data
   
   all_deaths %<>% bind_rows(merged_county_rates)
@@ -1824,8 +1799,6 @@ for (dataset in c('Drug-Related Disorders UCOD','Drug-Related Disorders UCOD and
   print(dataset)
   
 }
-
-
 
 # Clean data
 
@@ -1835,7 +1808,6 @@ all_deaths_UCOD <- all_deaths_UCOD[order(all_deaths_UCOD$rate),]
 all_deaths_UCOD <- tail(all_deaths_UCOD,n=20)
 all_deaths_UCOD$state_county_name = factor(all_deaths_UCOD$state_county_name,levels=all_deaths_UCOD$state_county_name)
 write.csv(all_deaths_UCOD,'/Users/Jordan/Box/Opioids_CCs/Scratch/all_deaths_UCOD.csv')
-
 
 # Graph data
 
@@ -1863,10 +1835,6 @@ dot_plot
 
 dev.off()
 
-
-
-
-
 # Clean data
 
 # all_deaths
@@ -1875,7 +1843,6 @@ all_deaths_UCOD_CC <- all_deaths_UCOD_CC[order(all_deaths_UCOD_CC$rate),]
 all_deaths_UCOD_CC <- tail(all_deaths_UCOD_CC,n=20)
 all_deaths_UCOD_CC$state_county_name = factor(all_deaths_UCOD_CC$state_county_name,levels=all_deaths_UCOD_CC$state_county_name)
 write.csv(all_deaths_UCOD_CC,'/Users/Jordan/Box/Opioids_CCs/Scratch/all_deaths_UCOD_CC.csv')
-
 
 # Graph data
 
@@ -1903,7 +1870,9 @@ dot_plot
 
 dev.off()
 
+##############################################################################################################
 ########################### Figure: plot_disorders_and_overdoses_demograhic_trends ###########################
+##############################################################################################################
 
 # Goal: Understand how age; sex; race; and ethnicity of decedents from both types of deaths vary from 1999-2019. We can imagine a separate plot for each variable, perhaps with some additional variations for each variable. For example, one could imagine a figure where average/median age of decedent from drug overdoses vs. drug-related disorders (focus on those with underlying cause of death as F1*, for now) varies across time. Another slightly different version would be a binned approach, where we identify the #/proportion of deaths in various age bins (your current figure in Box).
 
@@ -1925,8 +1894,6 @@ dev.off()
 
 all_deaths <- readRDS("Opioids_CCs/Scratch/Deaths_with_F1_code.rds")
 overdose_deaths <- readRDS("Opioids_CCs/Scratch/Overdoses.rds")
-
-
 
 # Clean data
 
@@ -1964,13 +1931,9 @@ summary_overdose %>%
 summary_overdose_long %<>% mutate(variable = factor(variable, levels = c('White', 'Black', 'Indian', 'Hispanic', 'Female')))
 summary_overdose_long %<>% mutate(death_type = 'Drug Overdose')
 
-
-
 # Bind data
 
 temp <- bind_rows(summary_disorders_long,summary_overdose_long)
-
-
 
 # Plot data
 
@@ -2020,7 +1983,9 @@ race_plot
 
 ggsave('Opioids_CCs/Figures/Figure_X_Race.jpg', width = 10, height = 5)
 
+#######################################################################################################
 ########################### Figure: plot_disorders_and_overdoses_sex_trends ###########################
+#######################################################################################################
 
 # Goal: I want to understand how age; sex; race; and ethnicity of decedents from both types of deaths vary from 1999-2019. We can imagine a separate plot for each variable, perhaps with some additional variations for each variable. For example, one could imagine a figure where average/median age of decedent from drug overdoses vs. drug-related disorders (focus on those with underlying cause of death as F1*, for now) varies across time. Another slightly different version would be a binned approach, where we identify the #/proportion of deaths in various age bins (your current figure in Box).
 
@@ -2036,8 +2001,6 @@ ggsave('Opioids_CCs/Figures/Figure_X_Race.jpg', width = 10, height = 5)
 
 all_deaths <- readRDS("Opioids_CCs/Scratch/Deaths_with_F1_code.rds")
 overdose_deaths <- readRDS("Opioids_CCs/Scratch/Overdoses.rds")
-
-
 
 # Clean data
 
@@ -2079,13 +2042,9 @@ summary_overdose %>%
 summary_overdose_long %<>% mutate(variable = factor(variable, levels = c('Male', 'Female')))
 summary_overdose_long %<>% mutate(death_type = 'Drug Overdose')
 
-
-
 # Bind data
 
 temp <- bind_rows(summary_disorders_long,summary_overdose_long)
-
-
 
 # Plot data
 
@@ -2102,15 +2061,15 @@ race_plot
 
 dev.off()
 
+################################################################################################
 ########################### Figure: plot_mortality_median_age_for_F1 ###########################
+################################################################################################
 
 # Goal: Variation in age, sex, race, and ethnicity of decedents with F1* UCOD or at least 1 F1* contributing cause from 1999-2019.
 
 # Load data
 
 all_deaths <- readRDS("Opioids_CCs/Scratch/Deaths_with_F1_code.rds")
-
-
 
 # Clean data
 
@@ -2140,8 +2099,6 @@ summary_age %>%
 
 summary_age_long$variable = factor(summary_age_long$variable, levels = c('Age_20','Age_30','Age_40','Age_50','Age_60','Age_70','Age_80','Age_125'))
 
-
-
 # Plot data
 
 png('Opioids_CCs/Figures/Figure_(7)_2.png',width=600,height=600)
@@ -2156,7 +2113,9 @@ yearly_plot
 
 dev.off()
 
+###################################################################################################
 ########################### Figure: plot_disorders_and_overdoses_trends ###########################
+###################################################################################################
 
 # Goal: Trends of drug overdoses and drug-related disorders from 1999-2019
 # X: Year
@@ -2170,8 +2129,6 @@ dev.off()
 
 overdose_deaths <- readRDS("Opioids_CCs/Scratch/Overdoses.rds") # overdose
 drug_deaths <- readRDS("Opioids_CCs/Scratch/Drug_related_Deaths.rds") # drug-related
-
-
 
 # Clean data
 
@@ -2188,7 +2145,6 @@ temp_overdose <- overdose_deaths %>%
   ungroup()
 temp_overdose$ICD_code <- 'drug overdoses'
 
-
 # drug-related disorder
 drug_deaths_new <- drug_deaths
 
@@ -2198,7 +2154,6 @@ temp_drug <- drug_deaths_new %>%
   summarise(n_n = n()) %>%
   ungroup()
 temp_drug$ICD_code <- 'drug-related disorders'
-
 
 # drug-related disorder with F1* UCOD and without F1* CC
 drug_deaths_UCOD <- drug_deaths
@@ -2210,7 +2165,6 @@ temp_drug_UCOD <- drug_deaths_UCOD %>%
   summarise(n_n = n()) %>%
   ungroup()
 temp_drug_UCOD$ICD_code <- 'drug-related disorders UCOD'
-
 
 # drug-related disorder with F1* CC and without F1* UCOD
 drug_deaths_CC <- drug_deaths
@@ -2231,13 +2185,9 @@ temp_drug_CC <- drug_deaths_CC %>%
   ungroup()
 temp_drug_CC$ICD_code <- 'drug-related disorders CC'
 
-
-
 # Bind data
 
 bind <- bind_rows(temp_overdose,temp_drug,temp_drug_UCOD,temp_drug_CC)
-
-
 
 # Plot data
 
