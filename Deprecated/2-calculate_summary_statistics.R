@@ -4,7 +4,7 @@
 
 
 
-# Summ Stats
+# Calculate summary stats
 
 for (year in c(1,2)){
   rds_means <- data.frame(0,1:28)
@@ -38,12 +38,9 @@ for (year in c(1,2)){
   
 }
 
-
-
 # Read in RDS
 rds <- readRDS(paste0("Opioids_CCs/Data/F1_rds"))
 rds_means_1 <- readRDS("Opioids_CCs/Data/rds_means_1")
 rds_means_2 <- readRDS("Opioids_CCs/Data/rds_means_2")
-
 
 
